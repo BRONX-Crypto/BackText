@@ -8,14 +8,13 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
     while i < ch.len() {
         if ch[i].is_ascii_alphabetic() {
             let mut start = i;
-            while ch[i].is_ascii_alphabetic() {
+            while i < ch.len() && ch[i].is_ascii_alphabetic() {
                 i += 1;
             }
             let data: String = ch[start..i].iter().collect();
             if data == "SetLen" {
                 bits.push(true); bits.push(false); bits.push(true); bits.push(false); bits.push(false);
-                while ch[i] != ')' {
-                        println!("i = {}", i);
+                while i < ch.len() && ch[i] != ')' {
                         match ch[i] {
                         '0' => bits.push(false),
                         '1' => bits.push(true),
@@ -31,11 +30,11 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
             }
             if data == "push" {
                 bits.push(false); bits.push(false); bits.push(false); bits.push(false); bits.push(true);
-                while ch[i] != ')' {
+                while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
-                        '0' => {bits.push(false); println!("Pushed False From Push")},
-                        '1' => {bits.push(true); println!("Pushed True From Push")},
-                        _ => println!("Find {}", ch[i]),
+                        '0' => bits.push(false),
+                        '1' => bits.push(true),
+                        _ => println!("find not allowed character: {}", ch[i]),
                     }
                     i += 1;
                 }
@@ -58,7 +57,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
     }
     if ch[i] == ';' {
         i += 1;
-        while ch[i] != ';' {
+        while i < ch.len() && ch[i] != ';' {
             i += 1;
         }
         continue;
@@ -67,7 +66,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
     bits
 }
 fn main() {
-println!("BackText 0 (0.0.0)");
+println!("BackText 0 (0.0.1)");
         print!("Please Enter BackText File to create Binary Backpack Format");
         std::io::stdout().flush().unwrap();
         let mut i = String::new();
@@ -79,11 +78,13 @@ println!("BackText 0 (0.0.0)");
         if path.exists() {
             let data = Lex(&F);
             let bytes = data.into_vec();
-            let mut cf = std::fs::File::create("output.bp").unwrap();
+            let fonrn = path.file_name().unwrap().to_string_lossy().to_string();
+            let form = format!("{}.backpack", fonrn);
+            let mut cf = std::fs ::File::create(&form).unwrap();
             cf.write_all(&bytes).unwrap();
-            println!("Successfuly Generated Backpack Binary From BackText on that path with name output.bp");
+            println!("Successfuly Generated {} From {}", form, fonrn);
         }
         if !path.exists() {
-            println!("This File it's not exists");
+            println!("This Path or File not exists: {:?}", path);
         }
 }
