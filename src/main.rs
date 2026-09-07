@@ -9,7 +9,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
         if ch[i].is_ascii_alphabetic() {
             let mut start = i;
             while i < ch.len() && ch[i].is_ascii_alphabetic() {
-                i += 1;
+                i += 1; 
             }
             let data: String = ch[start..i].iter().collect();
             if data == "SetLen" {
@@ -34,7 +34,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                     match ch[i] {
                         '0' => bits.push(false),
                         '1' => bits.push(true),
-                        _ => println!("find not allowed character: {}", ch[i]),
+                        _ => (),
                     }
                     i += 1;
                 }
