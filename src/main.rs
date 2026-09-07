@@ -6,7 +6,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
     let mut bits: BitVec<u8, Msb0> = BitVec::new();
     let mut i = 0;
     while i < ch.len() {
-        if ch[i].is_ascii_alphabetic() {
+        if ch[i].is_ascii_alphabetic() && ch[i] == '_' && ch[i] == '-' {
             let mut start = i;
             while i < ch.len() && ch[i].is_ascii_alphabetic() {
                 i += 1; 
@@ -62,6 +62,36 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
             }
             if data == "compare" {
                 bits.push(false); bits.push(false); bits.push(true); bits.push(true); bits.push(true);                  
+
+            }
+            if data == "Do" {
+             bits.push(false); bits.push(true); bits.push(false); bits.push(false); bits.push(false);                  
+                while i < ch.len() && ch[i] != ')' {
+                    match ch[i] {
+                        '0' => bits.push(false),
+                        '1' => bits.push(true),
+                        _ => (),
+                    }
+                    i += 1;
+                }
+                if ch[i] == ')' {
+                    i += 1;
+                }
+
+            }
+            if data == "Do_IF" {
+                bits.push(false); bits.push(true); bits.push(false); bits.push(false); bits.push(true);
+                while i < ch.len() && ch[i] != ')' {
+                    match ch[i] {
+                        '0' => bits.push(false),
+                        '1' => bits.push(true),
+                        _ => (),
+                    }
+                    i += 1;
+                }
+                if ch[i] == ')' {
+                    i += 1;
+                }
             }
 
             continue;
