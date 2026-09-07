@@ -125,7 +125,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
 }
 fn main() {
     let name = "BackText";
-    let vc = vec![0, 1, 0];
+    let vc = vec![0, 4, 0];
 println!("{} {} ({}.{}.{})", name, vc[0], vc[0], vc[1], vc[2]);
         print!("Please Enter BackText File To Create Binary Backpack Format");
         std::io::stdout().flush().unwrap();
