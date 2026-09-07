@@ -93,6 +93,18 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                     i += 1;
                 }
             }
+            if data == "XOR" {
+                bits.extend([false, true, false, true, false, false, false]);
+            }
+            if data == "AND" {
+                bits.extend([false, true, false, true, true, false, true]);
+            }
+            if data == "OR" {
+                bits.extend([false, true, true, false, false, true, false]);
+            }
+            if data == "NOT" {
+                bits.extenf([false, true, true, false, true, true, true]);
+            }
 
             continue;
 
