@@ -54,6 +54,15 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
             if data == "minus" {
                 bits.push(false); bits.push(false); bits.push(true); bits.push(false); bits.push(false);
             }
+            if data == "swap" {
+                bits.push(false); bits.push(false); bits.push(true); bits.push(false); bits.push(true);
+            }
+            if data == "copy" {
+                bits.push(false); bits.push(false); bits.push(true); bits.push(true); bits.push(false);
+            }
+            if data == "compare" {
+                bits.push(false); bits.push(false); bits.push(true); bits.push(true); bits.push(true);                  
+            }
 
             continue;
 
@@ -91,7 +100,7 @@ println!("{} {} ({}.{}.{})", name, vc[0], vc[0], vc[1], vc[2]);
             let form = format!("{}.backpack", fonrn);
             let mut cf = std::fs ::File::create(&form).unwrap();
             cf.write_all(&bytes).unwrap();
-            println!("Successfuly Generated {} From {}", form, fonrn);
+            println!("Successfuly Generated {} From {:?}", form, path);
         }
         if !path.exists() {
             println!("This Path or File not exists: {:?}", path);
