@@ -1,0 +1,3 @@
+SetLen(00010)
+push(10)
+XOR

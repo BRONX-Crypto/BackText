@@ -8,11 +8,12 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
     while i < ch.len() {
         if ch[i].is_ascii_alphabetic() || ch[i] == '_' || ch[i] == '-' {
             let mut start = i;
-            while i < ch.len() && ch[i].is_ascii_alphabetic() {
+            while i < ch.len() && ch[i].is_ascii_alphabetic() || ch[i] == '_' || ch[i] == '-' {
                 i += 1; 
             }
             let data: String = ch[start..i].iter().collect();
             if data == "SetLen" {
+                println!("Find Push");
                 bits.push(true); bits.push(false); bits.push(true); bits.push(false); bits.push(false);
                 while i < ch.len() && ch[i] != ')' {
                         match ch[i] {
@@ -30,6 +31,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
             }
             if data == "push" {
                 bits.push(false); bits.push(false); bits.push(false); bits.push(false); bits.push(true);
+                println!("Find Push");
                 while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
                         '0' => bits.push(false),
@@ -62,7 +64,6 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
             }
             if data == "compare" {
                 bits.push(false); bits.push(false); bits.push(true); bits.push(true); bits.push(true);                  
-
             }
             if data == "Do" {
              bits.push(false); bits.push(true); bits.push(false); bits.push(false); bits.push(false);                  
@@ -103,25 +104,74 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                 bits.extend([false, true, true, false, false, true, false]);
             }
             if data == "NOT" {
-                bits.extenf([false, true, true, false, true, true, true]);
+                bits.extend([false, true, true, false, true, true, true]);
             }
+            if data == "Done" {
+                bits.extend([false, true, true, true, false]);
+            }
+            if data == "Dupliacte_Select" {
+                bits.extend([false, true, true, true, true]);
+                while i < ch.len() && ch[i] != ')' {
+                    match ch[i] {
+                        '0' => bits.push(false),
+                        '1' => bits.push(true),
+                        ')' => (),
+                        _ => (),
+                    }
+                        i += 1;
+                    }
+                    if ch[i] == ')' {
+                        i += 1;       
+                    }
+                    }
+            if data == "swap_Select" {
+                bits.extend([true, false, false, false, false]);
+                    while i < ch.len() && ch[i] != ',' {
+                        match ch[i] {
+                            '0' => bits.push(false),
+                            '1' => bits.push(true),
+                            _ => (),
+                        }
+                        i += 1;
+                    }
+                    if ch[i] == ',' {
+                        i += 1;
+                        while i < ch.len() && ch[i] != ')' {
+                            match ch[i] {
+                                '0' => bits.push(false),
+                                '1' => bits.push(true),
+                                _ => (),
+                            }
+                            i += 1;
+                        }
+                        if ch[i] == ')' {
+                            i += 1;
+                        }
+                    }
 
+
+        
+            }
             continue;
-
-    }
+        }
     if ch[i].is_whitespace() {
         i += 1;
         continue;
     }
     if ch[i] == ';' {
+        println!("Find Simicolon");
         i += 1;
         while i < ch.len() && ch[i] != ';' {
             i += 1;
         }
+        if ch[i] == ';' {
+            i += 1;
+        }
         continue;
     }
-    }
-    bits
+
+}
+bits
 }
 fn main() {
     let name = "BackText";
