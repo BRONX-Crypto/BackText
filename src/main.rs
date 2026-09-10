@@ -104,13 +104,13 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                 bits.extend([false, true, false, true, false, true, false]);
             }
             if data == "NOT" {
-                bits.extend([false, true, true, true, true, true, true]);
+                bits.extend([false, true, false, true, false, true, true]);
             }
             if data == "Done" {
-                bits.extend([false, true, true, true, false]);
+                bits.extend([false, true, false, true, true]);
             }
             if data == "Dupliacte_Select" {
-                bits.extend([false, true, true, true, true]);
+                bits.extend([false, true, true, false, false]);
                 while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
                         '0' => bits.push(false),
@@ -223,6 +223,10 @@ println!("{} {} ({}.{}.{})", name, vc[0], vc[0], vc[1], vc[2]);
             cf.write_all(&bytes).unwrap();
             println!("Successfuly Generated {} From {:?}", form, path);
             println!("BitVec Length: {}", data.len());
+            let dataa: Vec<char> = data.iter().map(|b| match *b { false => '0', _ => '1', }).collect();
+            for x in dataa {
+                print!("{}", x);
+            }
         }
         if !path.exists() {
             println!("This Path or File not exists: {:?}", path);
