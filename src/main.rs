@@ -98,13 +98,13 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                 bits.extend([false, true, false, true, false, false, false]);
             }
             if data == "AND" {
-                bits.extend([false, true, false, true, true, false, true]);
+                bits.extend([false, true, false, true, false, false, true]);
             }
             if data == "OR" {
-                bits.extend([false, true, true, false, false, true, false]);
+                bits.extend([false, true, false, true, false, true, false]);
             }
             if data == "NOT" {
-                bits.extend([false, true, true, false, true, true, true]);
+                bits.extend([false, true, true, true, true, true, true]);
             }
             if data == "Done" {
                 bits.extend([false, true, true, true, false]);
@@ -152,6 +152,35 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
 
         
             }
+            if data == "swapSelectToLast" {
+                bits.extend([true, false, false, false, true]);
+                while i < ch.len() && ch[i] != ')' {
+                    match ch[i] {
+                        '0' => bits.push(false),
+                        _ => bits.push(true),
+                    }
+                    i += 1;
+                }
+                if ch[i] == ')' {
+                    i += 1;
+                }
+            }
+            if data == "call" {
+                bits.extend([false, true, true, true, true]);
+                while i < ch.len() && ch[i] != ')' {
+                    match ch[i] {
+                        '0' => bits.push(false),
+                        _ => bits.push(true),
+                    }
+                    i += 1;
+                }
+                if ch[i] == ')' {
+                    i += 1;
+                }
+            }
+            if data == "ret" {
+                bits.extend([true, false, false, false, false]);
+            }
             continue;
         }
     if ch[i].is_whitespace() {
@@ -187,12 +216,13 @@ println!("{} {} ({}.{}.{})", name, vc[0], vc[0], vc[1], vc[2]);
         let F = std::fs::read_to_string(path).unwrap();
         if path.exists() {
             let data = Lex(&F);
-            let bytes = data.into_vec();
+            let bytes = data.clone().into_vec();
             let fonrn = path.file_name().unwrap().to_string_lossy().to_string();
             let form = format!("{}.backpack", fonrn);
             let mut cf = std::fs ::File::create(&form).unwrap();
             cf.write_all(&bytes).unwrap();
             println!("Successfuly Generated {} From {:?}", form, path);
+            println!("BitVec Length: {}", data.len());
         }
         if !path.exists() {
             println!("This Path or File not exists: {:?}", path);
