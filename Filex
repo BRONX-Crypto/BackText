@@ -1,4 +1,0 @@
-SetLen(00010)
-Do(11)
-push(0)
-NOT

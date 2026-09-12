@@ -152,7 +152,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
 
         
             }
-            if data == "swapSelectToLast" {
+            if data == "swap_Select_To_Last" {
                 bits.extend([true, false, false, false, true]);
                 while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
@@ -180,6 +180,54 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
             }
             if data == "ret" {
                 bits.extend([true, false, false, false, false]);
+            }
+            if data == "clear_stack" {
+                bits.extend([true, false, false, false, true, false]);
+            }
+            if data == "clear_heap" {
+                bits.extend([true, false, false, false, true, true]);
+            } //set_cv = set_cut_value
+            if data == "set_cv" {
+                bits.extend([true, false, true, true, false]);
+                while i < ch.len() && ch[i] != ')' {
+                    match ch[i] {
+                        '0' => bits.push(false),
+                        '1' => bits.push(true),
+                        _ => (),
+                    }
+                    i += 1;
+                    if ch[i] == ')' {
+                        i += 1;
+                    }
+                }
+            }
+            if data == "set_second_cv" {
+                bits.extend([true, false, false, true, false]);
+                while i < ch.len() && ch[i] != ')' {
+                    match ch[i] {
+                        '0' => bits.push(false),
+                        '1' => bits.push(true),
+                        _ => (),
+                    }
+                    i += 1;
+                }
+                if ch[i] == ')' {
+                    i += 1;
+                }
+            }
+            if data == "KeepConfig" {
+                let mut st = i.clone();
+                while i < ch.len() && ch[i].is_ascii_alphabetic() {
+                    i += 1;
+                }
+                let sta: String = ch[st+1..=i].iter().collect();
+                if sta == "keep" || sta == "Keep" {
+                    bits.push(true);
+                }
+                if sta == "pop" {
+                    bits.push(false);
+                }
+                i += 1;
             }
             continue;
         }

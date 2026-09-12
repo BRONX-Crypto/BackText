@@ -1,0 +1,9 @@
+SetLen(00011)
+push(100)
+call(100)
+SetLen(00001)
+push(0)
+push(0)
+Done
+push(1)
+ret
