@@ -216,6 +216,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                 }
             }
             if data == "KeepConfig" {
+                bits.extend([true, false, true, false, true]);
                 let mut st = i.clone();
                 while i < ch.len() && ch[i].is_ascii_alphabetic() {
                     i += 1;
