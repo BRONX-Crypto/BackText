@@ -1,4 +1,5 @@
-KeepConfig Keep
-push(1)
+KeepConfig(1)
 push(0)
+push(1)
 plus
+Done

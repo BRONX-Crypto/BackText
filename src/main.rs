@@ -217,18 +217,24 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
             }
             if data == "KeepConfig" {
                 bits.extend([true, false, true, false, true]);
-                let mut st = i.clone();
-                while i < ch.len() && ch[i].is_ascii_alphabetic() {
+                while i < ch.len() && ch[i] != ')' {
+                    match ch[i] {
+                        '0' => bits.push(false),
+                        '1' => bits.push(true),
+                        _ => (),
+                    }
                     i += 1;
                 }
-                let sta: String = ch[st+1..=i].iter().collect();
-                if sta == "keep" || sta == "Keep" {
-                    bits.push(true);
-                }
-                if sta == "pop" {
-                    bits.push(false);
-                }
                 i += 1;
+            }
+            if data == "source_stack"
+            bits.extend([true, true, false, true, false]);
+            }
+            if data == "source_line" {
+                bits.extend([true, true, false, false, false]);
+            }
+            if data == "clear_lss" {
+                bits.extend([true, true, false, false, true]);
             }
             continue;
         }
