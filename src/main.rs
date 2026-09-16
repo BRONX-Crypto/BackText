@@ -196,11 +196,11 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                         _ => (),
                     }
                     i += 1;
+                }
                     if ch[i] == ')' {
                         i += 1;
                     }
                 }
-            }
             if data == "set_second_cv" {
                 bits.extend([true, false, false, true, false]);
                 while i < ch.len() && ch[i] != ')' {
@@ -302,8 +302,8 @@ bits.extend([true, true, true, false, false]);                             let m
         if ch[i] == ';' {
             i += 1;
         }
-        continue;
     }
+    else {println!("Hello"); break; }
 
 }
 bits

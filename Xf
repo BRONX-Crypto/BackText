@@ -1,0 +1,9 @@
+SetLen(00011)
+set_cv(100)
+set_second_cv(100)
+SetLen(00100)
+push(1000)
+BlockOrBit(Block)
+plus
+
+
