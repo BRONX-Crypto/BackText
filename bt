@@ -1,0 +1,5 @@
+SetLen(00010)
+Do(10)
+Done
+push(0)
+NOT

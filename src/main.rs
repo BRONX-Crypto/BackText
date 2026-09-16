@@ -227,14 +227,65 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                 }
                 i += 1;
             }
-            if data == "source_stack"
+            if data == "source_stack" {
             bits.extend([true, true, false, true, false]);
-            }
+        }
             if data == "source_line" {
                 bits.extend([true, true, false, false, false]);
             }
             if data == "clear_lss" {
                 bits.extend([true, true, false, false, true]);
+            }
+            if data == "SetBlockSize" {
+                bits.extend([true, true, false, true, true]);
+                let mut sta = &i;
+                i += 1;
+                while i < ch.len() && ch[i] != ',' {
+                    i += 1;
+                }
+                let range: String = ch[start..=i-1].iter().collect();
+                if range== "InLine" {
+                    i += 1;
+                    sta = &i;
+                    while i < ch.len() && ch[i] != ')' {
+                        match ch[i] {
+                            '0' => bits.push(false),
+                            '1' => bits.push(true),
+                            _ => (),
+                        }
+                        i += 1;
+                    }
+                    i += 1;
+                }
+                else {
+                    i += 1;
+                }
+            }
+            if data == "SetSecondBlockSize" {
+bits.extend([true, true, true, false, false]);                             let mut sta = &i;
+                i += 1;                              while i < ch.len() && ch[i] != ',' {                                          i += 1;
+                                }                                    let range: String = ch[start..=i-1].iter().collect();                     if range== "InLine" {
+                                                    i += 1;                              sta = &i;                            while i < ch.len() && ch[i] != ')' {
+                                                                            match ch[i] {                            '0' => bits.push(false),                                                  '1' => bits.push(true),                                                   _ => (),                         }                                    i += 1;
+                                                                                                }                                    i += 1;                          }                                    else {
+                                                                                                                    i += 1;                          }                    
+                
+            }
+            if data == "BlockOrBit" => {
+                bits.extend([true, true, true, false, true]);
+                i += 1;
+                let mut sta = &i;
+                while i < ch.len() && ch[i] != ')' {
+                    i += 1;
+                }
+                let range: String = ch[start..i].iter().collect();
+                if range == "Bit" {
+                    bits.push(false);
+                }
+                else {
+                    bits.push(true);
+                }
+            i += 1;
             }
             continue;
         }
@@ -259,7 +310,7 @@ bits
 }
 fn main() {
     let name = "BackText";
-    let vc = vec![0, 5, 1];
+    let vc = vec![1, 0, 0];
 println!("{} {} ({}.{}.{})", name, vc[0], vc[0], vc[1], vc[2]);
         print!("Please Enter BackText File To Create Binary Backpack Format");
         std::io::stdout().flush().unwrap();
