@@ -271,7 +271,7 @@ bits.extend([true, true, true, false, false]);                             let m
                                                                                                                     i += 1;                          }                    
                 
             }
-            if data == "BlockOrBit" => {
+            if data == "BlockOrBit" {
                 bits.extend([true, true, true, false, true]);
                 i += 1;
                 let mut sta = &i;
