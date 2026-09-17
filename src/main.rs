@@ -151,7 +151,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
         
             }
             if data == "swap_Select_To_Last" {
-                bits.extend([false true, true, true, false]);
+                bits.extend([false, true, true, true, false]);
                 while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
                         '0' => bits.push(false),
