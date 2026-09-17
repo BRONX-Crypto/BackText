@@ -1,0 +1,8 @@
+SetLen(00011)
+push(111)
+push(111)
+SetLen(00010)
+set_cv(11)
+set_second(11)
+plus
+Done 
