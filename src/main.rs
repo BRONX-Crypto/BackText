@@ -13,7 +13,6 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
             }
             let data: String = ch[start..i].iter().collect();
             if data == "SetLen" {
-                println!("Find Push");
                 bits.push(true); bits.push(false); bits.push(true); bits.push(false); bits.push(false);
                 while i < ch.len() && ch[i] != ')' {
                         match ch[i] {
@@ -31,7 +30,6 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
             }
             if data == "push" {
                 bits.push(false); bits.push(false); bits.push(false); bits.push(false); bits.push(true);
-                println!("Find Push");
                 while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
                         '0' => bits.push(false),
@@ -125,7 +123,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                     }
                     }
             if data == "swap_Select" {
-                bits.extend([true, false, false, false, false]);
+                bits.extend([false, true, true, false, true]);
                     while i < ch.len() && ch[i] != ',' {
                         match ch[i] {
                             '0' => bits.push(false),
@@ -153,7 +151,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
         
             }
             if data == "swap_Select_To_Last" {
-                bits.extend([true, false, false, false, true]);
+                bits.extend([false true, true, true, false]);
                 while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
                         '0' => bits.push(false),
@@ -188,7 +186,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                 bits.extend([true, false, false, false, true, true]);
             } //set_cv = set_cut_value
             if data == "set_cv" {
-                bits.extend([true, false, true, true, false]);
+                bits.extend([true, false, true, false, false]);
                 while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
                         '0' => bits.push(false),
@@ -202,7 +200,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                     }
                 }
             if data == "set_second_cv" {
-                bits.extend([true, false, false, true, false]);
+                bits.extend([true, false, true, true, false]);
                 while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
                         '0' => bits.push(false),
@@ -216,7 +214,7 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                 }
             }
             if data == "KeepConfig" {
-                bits.extend([true, false, true, false, true]);
+                bits.extend([true, false, false, true, true]);
                 while i < ch.len() && ch[i] != ')' {
                     match ch[i] {
                         '0' => bits.push(false),
@@ -228,51 +226,13 @@ pub fn Lex(source: &str) -> BitVec<u8, Msb0> {
                 i += 1;
             }
             if data == "source_stack" {
-            bits.extend([true, true, false, true, false]);
+            bits.extend([true, true, false, false, false]);
         }
             if data == "source_line" {
-                bits.extend([true, true, false, false, false]);
-            }
-            if data == "clear_lss" {
-                bits.extend([true, true, false, false, true]);
-            }
-            if data == "SetBlockSize" {
-                bits.extend([true, true, false, true, true]);
-                let mut sta = &i;
-                i += 1;
-                while i < ch.len() && ch[i] != ',' {
-                    i += 1;
-                }
-                let range: String = ch[start..=i-1].iter().collect();
-                if range== "InLine" {
-                    i += 1;
-                    sta = &i;
-                    while i < ch.len() && ch[i] != ')' {
-                        match ch[i] {
-                            '0' => bits.push(false),
-                            '1' => bits.push(true),
-                            _ => (),
-                        }
-                        i += 1;
-                    }
-                    i += 1;
-                }
-                else {
-                    i += 1;
-                }
-            }
-            if data == "SetSecondBlockSize" {
-bits.extend([true, true, true, false, false]);                             let mut sta = &i;
-                i += 1;                              while i < ch.len() && ch[i] != ',' {                                          i += 1;
-                                }                                    let range: String = ch[start..=i-1].iter().collect();                     if range== "InLine" {
-                                                    i += 1;                              sta = &i;                            while i < ch.len() && ch[i] != ')' {
-                                                                            match ch[i] {                            '0' => bits.push(false),                                                  '1' => bits.push(true),                                                   _ => (),                         }                                    i += 1;
-                                                                                                }                                    i += 1;                          }                                    else {
-                                                                                                                    i += 1;                          }                    
-                
-            }
+                bits.extend([true, false, true, false, true]);
+            }  
             if data == "BlockOrBit" {
-                bits.extend([true, true, true, false, true]);
+                bits.extend([true, true, false, false, true]);
                 i += 1;
                 let mut sta = &i;
                 while i < ch.len() && ch[i] != ')' {
@@ -286,6 +246,9 @@ bits.extend([true, true, true, false, false]);                             let m
                     bits.push(true);
                 }
             i += 1;
+            }
+            if data == "lss_clear" {
+                bits.extend([true, false, true, true, true]);
             }
             continue;
         }
@@ -310,7 +273,7 @@ bits
 }
 fn main() {
     let name = "BackText";
-    let vc = vec![1, 0, 0];
+    let vc = vec![1, 0, 3];
 println!("{} {} ({}.{}.{})", name, vc[0], vc[0], vc[1], vc[2]);
         print!("Please Enter BackText File To Create Binary Backpack Format");
         std::io::stdout().flush().unwrap();
